@@ -19,7 +19,7 @@ const ConfirmUser = ({ navigation, route }) => {
 
     const handleConfirm = async () => {
         try {
-          const response = await axios.post('http://localhost:5001/api/auth/confirm', {
+          const response = await axios.post('https://traz-backend.vercel.app/api/auth/confirm', {
             email,  // Assurez-vous que l'email est celui utilisé lors de l'inscription
             confirmationCode,
           });

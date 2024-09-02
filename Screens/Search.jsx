@@ -41,7 +41,7 @@ const Search = ({ navigation }) => {
 
     try {
       // Supposons que votre endpoint de recherche soit /api/objects/search
-      const response = await axios.get(`http://localhost:5001/api/reports/search?query=${searchText.trim()}`);
+      const response = await axios.get(`https://traz-backend.vercel.app/api/reports/search?query=${searchText.trim()}`);
       
       if (response.data.length === 0) {
         setNoResultsMessage(`Pas de résultat trouvé pour "${searchText.trim()}"`);

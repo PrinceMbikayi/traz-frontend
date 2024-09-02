@@ -18,7 +18,7 @@ const Profile = ({ navigation }) => {
         return;
       }
 
-      const response = await axios.get('http://localhost:5001/api/auth/profile', {
+      const response = await axios.get('https://traz-backend.vercel.app/api/auth/profile', {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -48,7 +48,7 @@ const Profile = ({ navigation }) => {
   const handleLogout = async () => {
     try {
       // Envoyer une requête au backend pour la déconnexion
-      const response = await axios.post('http://localhost:5001/api/auth/logout');
+      const response = await axios.post('https://traz-backend.vercel.app/api/auth/logout');
 
       if (response.status === 200) {
         // Supprimer le token du stockage local

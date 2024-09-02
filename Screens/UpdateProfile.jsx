@@ -27,7 +27,7 @@ const UpdateProfile = ({ navigation }) => {
           return;
         }
 
-        const response = await axios.get('http://localhost:5001/api/auth/profile', {
+        const response = await axios.get('https://traz-backend.vercel.app/api/auth/profile', {
           headers: {
             Authorization: `Bearer ${token}`
           }
@@ -75,7 +75,7 @@ const UpdateProfile = ({ navigation }) => {
       }
   
 
-      const response = await axios.put('http://localhost:5001/api/auth/profile', formData, {
+      const response = await axios.put('https://traz-backend.vercel.app/api/auth/profile', formData, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'multipart/form-data',

@@ -23,7 +23,7 @@ const Login = ({ navigation }) => {
     console.log('Password:', password); // Ajoutez cette ligne
   
     try {
-      const response = await axios.post('http://localhost:5001/api/auth/login', {
+      const response = await axios.post('https://traz-backend.vercel.app/api/auth/login', {
         email,
         password,
       });

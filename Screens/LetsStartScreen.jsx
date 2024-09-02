@@ -1,11 +1,12 @@
 import React from 'react'
-import { StyleSheet, Text, View, Image } from 'react-native'
+import { StyleSheet, Text, View, Image, ScrollView } from 'react-native'
 import { LinearGradient } from 'expo-linear-gradient'
 import COLORS from '../constants/colors'
 import Button from '../components/Button'
 
 const LetsStartScreen = ({ navigation }) => {
   return (
+    <ScrollView>
     <LinearGradient
         style={{
             flex: 1,
@@ -125,6 +126,7 @@ const LetsStartScreen = ({ navigation }) => {
             </View>
         </View>
     </LinearGradient>
+    </ScrollView>
   )
 }
 

@@ -43,7 +43,7 @@ const AuthScreen = ({ navigation }) => {
     }
 
     try {
-      const response = await axios.post('http://localhost:5001/api/auth/register', formData, {
+      const response = await axios.post('https://traz-backend.vercel.app/api/auth/register', formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }

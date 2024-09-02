@@ -78,7 +78,7 @@ const Find = ({ navigation }) => {
         });
       }
   
-    axios.post('http://localhost:5001/api/reports', formData)
+    axios.post('https://traz-backend.vercel.app/api/reports', formData)
       .then(response => {
         Alert.alert("Succès", "Votre commission sera versée par le propriétaire!", [
           { text: "OK", onPress: () => navigation.navigate("TabsAuth") }

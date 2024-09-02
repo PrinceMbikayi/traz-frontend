@@ -32,15 +32,15 @@ const HomeScreen = ({ navigation }) => {
               padding: 20,
             }}>
               <Text style={{
-                fontFamily: "arial",
-                fontSize: "30",
+                //fontFamily: "arial",
+                fontSize: 30,
                 fontWeight: "bold",
                 textAlign: "center",
                 color: "#fff"
               }}>J'ai perdu un objet</Text>
               <Text style={{
-                fontFamily: "arial",
-                fontSize: "16",
+                //fontFamily: "arial",
+                fontSize: 16,
                 width: "80%",
                 fontWeight: "bold",
                 textAlign: "center",
@@ -73,15 +73,15 @@ const HomeScreen = ({ navigation }) => {
               padding: 20,
             }}>
               <Text style={{
-                fontFamily: "arial",
-                fontSize: "30",
+                //fontFamily: "arial",
+                fontSize: 30,
                 fontWeight: "bold",
                 textAlign: "center",
                 color: "#fff"
               }}>J'ai trouvé un objet</Text>
               <Text style={{
-                fontFamily: "arial",
-                fontSize: "16",
+                //fontFamily: "arial",
+                fontSize: 16,
                 width: "80%",
                 fontWeight: "bold",
                 textAlign: "center",
@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
         backgroundColor: "#D3D3D3",
     },
     head: {
-      backgroundColor: "#292929",
+      backgroundColor: "#F5F5F5",
       width: "100%",
       height: 60,
       padding: 20,
