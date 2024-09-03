@@ -246,6 +246,7 @@ const DetailScreen = ({ navigation, route }) => {
             <TextInput 
               placeholder='Ex: 0971922023'
               placeholderTextColor={COLORS.black}
+              keyboardType='numeric'
               style={{
                 width: "100%",
               }}

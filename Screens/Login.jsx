@@ -130,6 +130,7 @@ const Login = ({ navigation }) => {
               placeholder='Ex: 1234'
               placeholderTextColor={COLORS.black}
               secureTextEntry={isPasswordShow}
+              keyboardType='numeric'
               style={{
                 width: "100%",
               }}

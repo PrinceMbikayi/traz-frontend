@@ -25,6 +25,7 @@ const ConfirmUser = ({ navigation, route }) => {
           });
       
           if (response.status === 200) {
+            console.log('User confirmed successfully');
             Alert.alert('Succès', 'Votre compte a été confirmé!');
             navigation.navigate('TabsAuth'); // Redirigez l'utilisateur vers l'écran de connexion
           } else {

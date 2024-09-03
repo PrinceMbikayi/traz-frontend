@@ -247,6 +247,7 @@ const AuthScreen = ({ navigation }) => {
             <TextInput 
               placeholder='Ex: 0971922023'
               placeholderTextColor={COLORS.black}
+              keyboardType='numeric'
               style={{
                 width: "100%",
               }}
@@ -279,6 +280,7 @@ const AuthScreen = ({ navigation }) => {
               placeholder='Ex: 1234'
               placeholderTextColor={COLORS.black}
               secureTextEntry={isPasswordShow}
+              keyboardType='numeric'
               style={{
                 width: "100%",
               }}

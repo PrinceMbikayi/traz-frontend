@@ -288,6 +288,7 @@ const UpdateProfile = ({ navigation }) => {
               placeholder='Entrez votre password'
               placeholderTextColor={COLORS.black}
               secureTextEntry={isPasswordShow}
+              keyboardType='numeric'
               style={{
                 width: "100%",
               }}

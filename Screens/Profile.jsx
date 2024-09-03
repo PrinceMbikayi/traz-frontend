@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { StyleSheet, Alert, View, Text, Image } from 'react-native'
+import { StyleSheet, Alert, View, Text, Image, ScrollView } from 'react-native'
 import Button from '../components/Button'
 import axios from 'axios'
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -68,6 +68,7 @@ const Profile = ({ navigation }) => {
   };
 
   return (
+    <ScrollView>
     <View style={styles.container}>
       <View style={styles.head}>
         <Image 
@@ -152,6 +153,7 @@ const Profile = ({ navigation }) => {
         />
         </View>
     </View>
+    </ScrollView>
   )
 }
 

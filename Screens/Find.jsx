@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import { StyleSheet, Text, TextInput, View, Alert, TouchableOpacity, Image, Pressable, StatusBar } from 'react-native'
+import { StyleSheet, Text, TextInput, View, Alert, TouchableOpacity, Image, ScrollView, StatusBar } from 'react-native'
 import COLORS from '../constants/colors'
 import Button from '../components/Button'
 import { Dropdown } from "react-native-element-dropdown";
 import axios from "axios"
 import * as ImagePicker from 'expo-image-picker';
+import * as FileSystem from 'expo-file-system';
 
 const Find = ({ navigation }) => {
 
@@ -55,7 +56,16 @@ const Find = ({ navigation }) => {
     });
 
     if (!result.canceled) {
-      setImageUri(result.assets[0].uri);
+      const { uri } = result.assets[0];
+      const fileInfo = await FileSystem.getInfoAsync(uri);
+
+      // Vérifier la taille du fichier
+      if (fileInfo.size > 3000000) { // 3 Mo en octets
+        Alert.alert("Erreur", "Taille d'image doit etre maximum à 3 Mo.");
+        return;
+      }
+
+      setImageUri(uri);
     }
   };
     
@@ -92,6 +102,7 @@ const Find = ({ navigation }) => {
   };
 
   return (
+    <ScrollView>
     <View style={{ flex: 1, backgroundColor: COLORS.white, paddingTop: 20, }}>
       <View style={{ flex: 1 }}>
         <View>
@@ -328,6 +339,7 @@ const Find = ({ navigation }) => {
 
       </View>
     </View>
+    </ScrollView>
   )
 }
 
