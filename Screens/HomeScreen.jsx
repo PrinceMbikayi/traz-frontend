@@ -32,14 +32,12 @@ const HomeScreen = ({ navigation }) => {
               padding: 20,
             }}>
               <Text style={{
-                //fontFamily: "arial",
                 fontSize: 30,
                 fontWeight: "bold",
                 textAlign: "center",
                 color: "#fff"
               }}>J'ai perdu un objet</Text>
               <Text style={{
-                //fontFamily: "arial",
                 fontSize: 16,
                 width: "80%",
                 fontWeight: "bold",
@@ -73,14 +71,12 @@ const HomeScreen = ({ navigation }) => {
               padding: 20,
             }}>
               <Text style={{
-                //fontFamily: "arial",
                 fontSize: 30,
                 fontWeight: "bold",
                 textAlign: "center",
                 color: "#fff"
               }}>J'ai trouvé un objet</Text>
               <Text style={{
-                //fontFamily: "arial",
                 fontSize: 16,
                 width: "80%",
                 fontWeight: "bold",
