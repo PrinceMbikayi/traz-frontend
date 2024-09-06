@@ -12,6 +12,10 @@ const Search = ({ navigation }) => {
   const [noResultsMessage, setNoResultsMessage] = useState('');
   const [isFocus, setIsFocus] = useState(false);
   const [showOtherInput, setShowOtherInput] = useState(false);
+  const [showDocumentInput, setShowDocumentInput] = useState(false);
+  const [showNameInput, setShowNameInput] = useState(false);
+  const [documentNature, setDocumentNature] = useState('');
+  const [documentOwnerName, setDocumentOwnerName] = useState('');
 
       // Liste des options pour "Nature de l'objet"
       const searchData = [
@@ -32,36 +36,84 @@ const Search = ({ navigation }) => {
         { label: 'Autre', value: 'Autre' },
       ];
 
+            // Liste des types de documents spécifiques
+    const searchdocumentNatureData = [
+      { label: 'Carte d\'électeur', value: 'Carte d\'électeur' },
+      { label: 'Passeport', value: 'Passeport' },
+      { label: 'Permis de conduire', value: 'Permis de conduire' },
+      { label: 'Attestation de mariage', value: 'Attestation de mariage' },
+    ];
+
   // Fonction pour gérer la recherche
+  // const handleSearch = async () => {
+  //   if (!searchText.trim()) {
+  //     Alert.alert('Erreur', 'Veuillez entrer un texte de recherche.');
+  //     return;
+  //   }
+
+  //   try {
+  //     // Supposons que votre endpoint de recherche soit /api/objects/search
+  //     const response = await axios.get(`http://localhost:5001/api/reports/search?query=${searchText.trim()}`);
+      
+  //     if (response.data.length === 0) {
+  //       setNoResultsMessage(`Pas de résultat trouvé pour "${searchText.trim()}"`);
+  //       setResults([]);
+  //     } else {
+  //       setNoResultsMessage('');
+  //       setResults(response.data);
+  //     } 
+  //     } catch (error) {
+  //       // Vérifiez si le backend retourne un message spécifique "Aucun rapport trouvé"
+  //   if (error.response && error.response.data.message === "Aucun rapport trouvé") {
+  //     setNoResultsMessage(`Pas de résultat trouvé pour "${searchText.trim()}"`);
+  //     setResults([]);
+  //   } else {
+  //     // Pour toutes les autres erreurs, affichez un message générique
+  //     console.error('Erreur lors de la recherche:', error.response ? error.response.data : error.message);
+  //     Alert.alert('Erreur', 'Une erreur est survenue lors de la recherche.');
+  //   }
+  // }
+  // };
+
   const handleSearch = async () => {
-    if (!searchText.trim()) {
+    if (showNameInput && !documentOwnerName.trim()) {
+      Alert.alert('Erreur', 'Veuillez entrer le nom du document.');
+      return;
+    }
+  
+    let query = searchText.trim();  // Initialisez la requête avec le texte de recherche général
+  
+    // Si la nature du document est sélectionnée, ajustez la requête
+    if (showNameInput && documentOwnerName.trim()) {
+      query = documentOwnerName.trim();  // Utilisez le nom du document pour la recherche
+    }
+  
+    if (!query) {
       Alert.alert('Erreur', 'Veuillez entrer un texte de recherche.');
       return;
     }
-
+  
     try {
       // Supposons que votre endpoint de recherche soit /api/objects/search
-      const response = await axios.get(`https://traz-backend.vercel.app/api/reports/search?query=${searchText.trim()}`);
+      const response = await axios.get(`https://traz-backend.vercel.app/api/reports/search?query=${query}`);
       
       if (response.data.length === 0) {
-        setNoResultsMessage(`Pas de résultat trouvé pour "${searchText.trim()}"`);
+        setNoResultsMessage(`Pas de résultat trouvé pour "${query}"`);
         setResults([]);
       } else {
         setNoResultsMessage('');
         setResults(response.data);
-      } 
-      } catch (error) {
-        // Vérifiez si le backend retourne un message spécifique "Aucun rapport trouvé"
-    if (error.response && error.response.data.message === "Aucun rapport trouvé") {
-      setNoResultsMessage(`Pas de résultat trouvé pour "${searchText.trim()}"`);
-      setResults([]);
-    } else {
-      // Pour toutes les autres erreurs, affichez un message générique
-      console.error('Erreur lors de la recherche:', error.response ? error.response.data : error.message);
-      Alert.alert('Erreur', 'Une erreur est survenue lors de la recherche.');
+      }
+    } catch (error) {
+      if (error.response && error.response.data.message === "Aucun rapport trouvé") {
+        setNoResultsMessage(`Pas de résultat trouvé pour "${query}"`);
+        setResults([]);
+      } else {
+        console.error('Erreur lors de la recherche:', error.response ? error.response.data : error.message);
+        Alert.alert('Erreur', 'Une erreur est survenue lors de la recherche.');
+      }
     }
-  }
-  };
+  };  
 
     // Fonction pour gérer le clic sur un résultat
     const handleItemPress = (item) => {
@@ -109,7 +161,7 @@ const Search = ({ navigation }) => {
             data={searchData}
             labelField="label"
             valueField="value"
-            placeholder='Sélectionnez la nature'
+            placeholder='Sélectionnez objet'
             value={searchText}
             onFocus={() => setIsFocus(true)}
             onBlur={() => setIsFocus(false)}
@@ -117,6 +169,8 @@ const Search = ({ navigation }) => {
               setSearchText(item.value);
               setIsFocus(false);
               setShowOtherInput(item.value === 'Autre');
+              setShowDocumentInput(item.value === 'Documents');
+              setShowNameInput(false); // Réinitialiser l'affichage du nom
             }}
           />
         </View>
@@ -149,6 +203,70 @@ const Search = ({ navigation }) => {
                 }}
                 value={searchText}
                 onChangeText={setSearchText}
+              />
+            </View>
+          </View>
+        )}
+
+        {showDocumentInput && (
+                  <View style={{padding: 16,
+                    marginBottom: 12,
+                    height: 50,
+                    borderColor: COLORS.black,
+                    borderWidth: 1,
+                    borderRadius: 8,
+                    paddingLeft: 22,
+                    marginLeft: 22,
+                    marginRight: 22,
+                    marginTop: 22,
+                  }}>
+                    <Dropdown
+                      style={[styles.dropdown, isFocus && { borderColor: 'blue' }]}
+                      placeholderStyle={styles.placeholderStyle}
+                      selectedTextStyle={styles.selectedTextStyle}
+                      data={searchdocumentNatureData}
+                      labelField="label"
+                      valueField="value"
+                      placeholder='Sélectionnez la nature du document'
+                      value={documentNature}
+                      onFocus={() => setIsFocus(true)}
+                      onBlur={() => setIsFocus(false)}
+                      onChange={item => {
+                        setDocumentNature(item.value);
+                        setShowNameInput(true);
+                      }}
+                    />
+            </View>
+        )}
+
+      {showNameInput && (
+          <View style={{ marginBottom: 12 }}>
+            <Text style={{
+              fontSize: 16,
+              fontWeight: 400,
+              marginVertical: 8,
+              marginLeft: 22,
+            }}>Donnez le nom du document</Text>
+
+            <View style={{
+              width: "90%",
+              height: 48,
+              borderColor: COLORS.black,
+              borderWidth: 1,
+              borderRadius: 8,
+              alignItems: "center",
+              justifyContent: "center",
+              paddingLeft: 22,
+              marginLeft: 22,
+            }}>
+              <TextInput 
+                placeholder='Entrez la nature'
+                placeholderTextColor={COLORS.black}
+                style={{
+                  width: "100%",
+                }}
+                value={documentOwnerName}
+                onChangeText={setDocumentOwnerName}
               />
             </View>
           </View>

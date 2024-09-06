@@ -1,22 +1,25 @@
 import React, { useEffect, useState } from 'react'
-import { StyleSheet, Text, TextInput, View, Alert, TouchableOpacity, Image, ScrollView, StatusBar } from 'react-native'
+import { StyleSheet, Text, TextInput, View, Alert, TouchableOpacity, Image, Pressable, StatusBar, ScrollView } from 'react-native'
 import COLORS from '../constants/colors'
 import Button from '../components/Button'
 import { Dropdown } from "react-native-element-dropdown";
 import axios from "axios"
 import * as ImagePicker from 'expo-image-picker';
-import * as FileSystem from 'expo-file-system';
 
 const Find = ({ navigation }) => {
 
   const [city, setCity] = useState('');
   const [isFocus, setIsFocus] = useState(false);
   const [documentName, setDocumentName] = useState('');
+  const [documentNature, setDocumentNature] = useState('');
   const [fullName, setFullName] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [imageUri, setImageUri] = useState(null);
   const [showOtherInput, setShowOtherInput] = useState(false);
+  const [showDocumentInput, setShowDocumentInput] = useState(false);
+  const [showNameInput, setShowNameInput] = useState(false);
   const [otherDocumentName, setOtherDocumentName] = useState('');
+  const [documentOwnerName, setDocumentOwnerName] = useState('');
 
     // Liste des options pour "Nature de l'objet"
     const documentNameData = [
@@ -35,6 +38,14 @@ const Find = ({ navigation }) => {
       { label: 'Parapluie', value: 'Parapluie' },
       { label: 'Appareil photo', value: 'Appareil photo' },
       { label: 'Autre', value: 'Autre' },
+    ];
+
+      // Liste des types de documents spécifiques
+    const documentNatureData = [
+      { label: 'Carte d\'électeur', value: 'Carte d\'électeur' },
+      { label: 'Passeport', value: 'Passeport' },
+      { label: 'Permis de conduire', value: 'Permis de conduire' },
+      { label: 'Attestation de mariage', value: 'Attestation de mariage' },
     ];
 
   // Fonction pour ouvrir la galerie d'images
@@ -56,16 +67,7 @@ const Find = ({ navigation }) => {
     });
 
     if (!result.canceled) {
-      const { uri } = result.assets[0];
-      const fileInfo = await FileSystem.getInfoAsync(uri);
-
-      // Vérifier la taille du fichier
-      if (fileInfo.size > 3000000) { // 3 Mo en octets
-        Alert.alert("Erreur", "Taille d'image doit etre maximum à 3 Mo.");
-        return;
-      }
-
-      setImageUri(uri);
+      setImageUri(result.assets[0].uri);
     }
   };
     
@@ -74,8 +76,12 @@ const Find = ({ navigation }) => {
     const handleSubmit = () => {
       const formData = new FormData();
       const selectedDocumentName = documentName === 'Autre' ? otherDocumentName : documentName;
+      const selectedDocumentNature = documentName === 'Documents' ? documentNature : null;
+      const selecteddocumentOwnerName = documentName === 'Documents' ? documentOwnerName : documentName;
 
       formData.append('documentName', selectedDocumentName);
+      formData.append('documentNature', selectedDocumentNature);
+      formData.append('documentOwnerName', selecteddocumentOwnerName);
       formData.append('fullName', fullName);
       formData.append('phoneNumber', phoneNumber);
       formData.append('city', city);
@@ -151,6 +157,8 @@ const Find = ({ navigation }) => {
               setDocumentName(item.value);
               setIsFocus(false);
               setShowOtherInput(item.value === 'Autre');
+              setShowDocumentInput(item.value === 'Documents');
+              setShowNameInput(['Passeport', 'Carte d\'électeur', 'Permis de conduire', 'Attestation de mariage'].includes(item.value));
             }}
           />
         </View>
@@ -183,6 +191,70 @@ const Find = ({ navigation }) => {
                 }}
                 value={otherDocumentName}
                 onChangeText={setOtherDocumentName}
+              />
+            </View>
+          </View>
+        )}
+
+      {showDocumentInput && (
+                  <View style={{padding: 16,
+                    marginBottom: 12,
+                    height: 50,
+                    borderColor: COLORS.black,
+                    borderWidth: 1,
+                    borderRadius: 8,
+                    paddingLeft: 22,
+                    marginLeft: 22,
+                    marginRight: 22,
+                    marginTop: 22,
+                  }}>
+                    <Dropdown
+                      style={[styles.dropdown, isFocus && { borderColor: 'blue' }]}
+                      placeholderStyle={styles.placeholderStyle}
+                      selectedTextStyle={styles.selectedTextStyle}
+                      data={documentNatureData}
+                      labelField="label"
+                      valueField="value"
+                      placeholder='Sélectionnez la nature du document'
+                      value={documentNature}
+                      onFocus={() => setIsFocus(true)}
+                      onBlur={() => setIsFocus(false)}
+                      onChange={item => {
+                        setDocumentNature(item.value);
+                        setShowNameInput(true);
+                      }}
+                    />
+            </View>
+        )}
+
+      {showNameInput && (
+          <View style={{ marginBottom: 12 }}>
+            <Text style={{
+              fontSize: 16,
+              fontWeight: 400,
+              marginVertical: 8,
+              marginLeft: 22,
+            }}>Donnez le nom du document</Text>
+
+            <View style={{
+              width: "90%",
+              height: 48,
+              borderColor: COLORS.black,
+              borderWidth: 1,
+              borderRadius: 8,
+              alignItems: "center",
+              justifyContent: "center",
+              paddingLeft: 22,
+              marginLeft: 22,
+            }}>
+              <TextInput 
+                placeholder='Entrez la nature'
+                placeholderTextColor={COLORS.black}
+                style={{
+                  width: "100%",
+                }}
+                value={documentOwnerName}
+                onChangeText={setDocumentOwnerName}
               />
             </View>
           </View>
@@ -289,6 +361,14 @@ const Find = ({ navigation }) => {
           </View>
         </View>
 
+        <View style={{ marginBottom: 12 }}>
+          <Text style={{
+            fontSize: 16,
+            fontWeight: 400,
+            marginVertical: 8,
+            marginLeft: 22,
+          }}>Télécharger une image</Text>
+
         <View>
           <TouchableOpacity 
             onPress={selectImage}
@@ -302,7 +382,6 @@ const Find = ({ navigation }) => {
               paddingLeft: 22,
               marginLeft: 22,
               marginRight: 22,
-              marginTop: 22,
               width: "50%",
               height: 80,
             }}
@@ -316,6 +395,8 @@ const Find = ({ navigation }) => {
 
           </TouchableOpacity>
         </View>
+      
+      </View>
 
         <View style={{
           flexDirection: "row",
