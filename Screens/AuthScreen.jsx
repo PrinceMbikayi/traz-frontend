@@ -67,7 +67,7 @@ const AuthScreen = ({ navigation }) => {
 
       if (response.status === 200) {
         const { user } = response.data;
-        const { token } = user;
+        const { token } = user.data;
 
         // Alert.alert('Succès', 'Inscription réussie!');
         // console.log('Response data.user:', response.data.user);
